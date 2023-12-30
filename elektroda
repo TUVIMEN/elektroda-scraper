@@ -34,19 +34,19 @@ get_json() {
     local -r t="$(ucurl "$1")"
     {
     echo "$1" #link
-    echo "$(hgrep 'h1 +id="topic-title-editor" @p"%i\n"' <<< "$t" | sed '/^$/d')" #title
-    echo "$(hgrep 'span +itemprop="name" @p"%i\n"' <<< "$t" | awk '!seen[$0]++' | sed '1,2d; :x; $!{N;s/\n/\//;bx}')" #path
-    echo "$(hgrep 'span +class="time" @p"%i\n"' <<< "$t" | sed 's/^.*> //; s/ *$//')" #time
-    echo "$(hgrep 'span +class="views" @p"%i\n"' <<< "$t" | sed 's/^.*> //; s/ //g')" #views
-    echo "$(hgrep 'span +class="replies" @p"%i\n"' <<< "$t" | sed 's/^.*> //; s/ //g')" #replies
-    if hgrep 'a +class="reply-bttn" @p"%i\n"' <<< "$t" | grep -q 'Zamkni'
+    echo "$(hgrep 'h1 +id="topic-title-editor" | "%i\n"' <<< "$t" | sed '/^$/d')" #title
+    echo "$(hgrep 'span +itemprop="name" | "%i\n"' <<< "$t" | awk '!seen[$0]++' | sed '1,2d; :x; $!{N;s/\n/\//;bx}')" #path
+    echo "$(hgrep 'span +class="time" | "%i\n"' <<< "$t" | sed 's/^.*> //; s/ *$//')" #time
+    echo "$(hgrep 'span +class="views" | "%i\n"' <<< "$t" | sed 's/^.*> //; s/ //g')" #views
+    echo "$(hgrep 'span +class="replies" | "%i\n"' <<< "$t" | sed 's/^.*> //; s/ //g')" #replies
+    if hgrep 'a +class="reply-bttn" | "%i\n"' <<< "$t" | grep -q 'Zamkni'
     then
         echo 'true'
     else
         echo 'false'
     fi
 
-    paste <(hgrep 'span +class="hidden-xs" @p"%i\n"' <<< "$t") <(hgrep 'div +class="level" @p"%i\n"' <<< "$t" | grep -o '[0-9]*') <(hgrep 'div +class="sec-a "; time +datetime @p"%(datetime)a\n"' <<< "$t") <(hgrep 'div +id="post-content-[0-9]*"; div +class="text-wrap"' <<< "$t" | tr '\t\r\n' '   ' | hgrep -F 'div +class="text-wrap" @p"%i\n"')
+    paste <(hgrep 'span +class="hidden-xs" | "%i\n"' <<< "$t") <(hgrep 'div +class="level" | "%i\n"' <<< "$t" | grep -o '[0-9]*') <(hgrep 'div +class="sec-a "; time +datetime | "%(datetime)a\n"' <<< "$t") <(hgrep 'div +id="post-content-[0-9]*"; div +class="text-wrap"' <<< "$t" | tr '\t\r\n' '   ' | hgrep -F 'div +class="text-wrap" | "%i\n"')
     } | recode ISO-8859-2..UTF8 | jq -RnMcs '
         (inputs | split("\n")) as $lines | 
 
@@ -61,7 +61,7 @@ get_json() {
 }
 
 get_sitemap() {
-    for j in $(ucurl "$1" | hgrep 'loc @m"^https://www.elektroda.pl/rtvforum/topic[0-9]*" @p"%i\n"')
+    for j in $(ucurl "$1" | hgrep 'loc @m"^https://www.elektroda.pl/rtvforum/topic[0-9]*" | "%i\n"')
     do
        [ "$(jobs | wc -l)" -gt "$maxprocs" ] && wait %%
         get_json "$j" &
@@ -69,7 +69,7 @@ get_sitemap() {
 }
 
 get_sitemaps() {
-	for i in $(ucurl 'https://www.elektroda.pl/sitemap.xml' | hgrep 'loc @m"^https://www.elektroda.pl/forum-gf[0-9]*" @p"%i\n"')
+	for i in $(ucurl 'https://www.elektroda.pl/sitemap.xml' | hgrep 'loc @m"^https://www.elektroda.pl/forum-gf[0-9]*" | "%i\n"')
 	do
         echo "$i"
         get_sitemap "$i"
@@ -77,7 +77,7 @@ get_sitemaps() {
 }
 
 get_page() {
-    for j in $(ucurl "$1" | hgrep 'tr; h2; a @p"https://www.elektroda.pl%(href)a\n"')
+    for j in $(ucurl "$1" | hgrep 'tr; h2; a | "https://www.elektroda.pl%(href)a\n"')
     do
        [ "$(jobs | wc -l)" -gt "$maxprocs" ] && wait %%
        get_json "$j" &
@@ -90,8 +90,8 @@ get_forum() {
     do
         echo "$next"
         t1="$(ucurl "$next")"
-        next="$(hgrep 'a +class="next" @p"https://www.elektroda.pl%(href)a\n"' <<< "$t1" | head -n1)"
-        for j in $(hgrep 'tr; h2; a @p"https://www.elektroda.pl%(href)a\n"' <<< "$t1")
+        next="$(hgrep 'a +class="next" | "https://www.elektroda.pl%(href)a\n"' <<< "$t1" | head -n1)"
+        for j in $(hgrep 'tr; h2; a | "https://www.elektroda.pl%(href)a\n"' <<< "$t1")
         do
             [ "$(jobs | wc -l)" -gt "$maxprocs" ] && wait %%
             get_json "$j" &
@@ -101,7 +101,7 @@ get_forum() {
 }
 
 get_forums() {
-    for i in $(ucurl 'https://www.elektroda.pl/rtvforum/forums.html' | hgrep 'div +id="category-[0-9]*"; a +href="/rtvforum/forum[0-9]*\.html" @p"https://www.elektroda.pl%(href)a\n"')
+    for i in $(ucurl 'https://www.elektroda.pl/rtvforum/forums.html' | hgrep 'div +id="category-[0-9]*"; a +href="/rtvforum/forum[0-9]*\.html" | "https://www.elektroda.pl%(href)a\n"')
 	do
         get_forum "$i"
 	done
