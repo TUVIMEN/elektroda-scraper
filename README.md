@@ -1,6 +1,6 @@
-# elektroda
+# elektroda-scraper
 
-A bash script for converting elektroda forum to json.
+A bash script for scraping elektroda forum to json.
 
 ## Requirements
 
@@ -10,7 +10,7 @@ A bash script for converting elektroda forum to json.
 
 ## Installation
     
-    install -m 755 elektroda /usr/bin
+    install -m 755 elektroda-scraper /usr/bin
 
 ## Supported links formats
     
@@ -33,7 +33,7 @@ Here's [json](example.json) from some issue on [elektroda](https://www.elektroda
 
 ## Usage
 
-    elektroda directory [URLS...]
+    elektroda-scraper directory [URLS...]
 
 All options should be specified before the directory.
 
@@ -41,20 +41,20 @@ The script writes every question to file in the directory (without overwriting t
 
 Download issues from sitemap to directory x
 
-    elektroda x sitemap
+    elektroda-scraper x sitemap
 
 Download issues from forums to directory x
 
-    elektroda x forums
+    elektroda-scraper x forums
 
 Download some issues to directory x
 
-    elektroda x 3044759 924997 3188141 https://www.elektroda.pl/rtvforum/topic3300674.html
+    elektroda-scraper x 3044759 924997 3188141 https://www.elektroda.pl/rtvforum/topic3300674.html
 
 Download issues from forum 112 to directory x
 
-    elektroda x forum112
+    elektroda-scraper x forum112
 
 Get some help
 
-    elektroda -h
+    elektroda-scraper -h
