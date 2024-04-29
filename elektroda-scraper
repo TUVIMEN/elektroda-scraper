@@ -34,34 +34,41 @@ get_json() {
     local -r t="$(ucurl "$1")"
     {
     echo "$1" #link
-    echo "$(hgrep 'h1 +id="topic-title-editor" | "%i\n"' <<< "$t" | sed '/^$/d')" #title
-    echo "$(hgrep 'span +itemprop="name" | "%i\n"' <<< "$t" | awk '!seen[$0]++' | sed '1,2d; :x; $!{N;s/\n/\//;bx}')" #path
-    echo "$(hgrep 'span +class="time" | "%i\n"' <<< "$t" | sed 's/^.*> //; s/ *$//')" #time
-    echo "$(hgrep 'span +class="views" | "%i\n"' <<< "$t" | sed 's/^.*> //; s/ //g')" #views
-    echo "$(hgrep 'span +class="replies" | "%i\n"' <<< "$t" | sed 's/^.*> //; s/ //g')" #replies
-    if hgrep 'a +class="reply-bttn" | "%i\n"' <<< "$t" | grep -q 'Zamkni'
+    if reliq 'a .reply-bttn | "%i\n"' <<< "$t" | grep -q 'Zamkni'
     then
         echo 'true'
     else
         echo 'false'
     fi
-
-    paste <(hgrep 'span +class="hidden-xs" | "%i\n"' <<< "$t") <(hgrep 'div +class="level" | "%i\n"' <<< "$t" | grep -o '[0-9]*') <(hgrep 'div +class="sec-a "; time +datetime | "%(datetime)a\n"' <<< "$t") <(hgrep 'div +id="post-content-[0-9]*"; div +class="text-wrap"' <<< "$t" | tr '\t\r\n' '   ' | hgrep -F 'div +class="text-wrap" | "%i\n"')
+    reliq '
+        . h1 class=a>topic-title-editor | "%i\n" / sed "/^$/d",
+        . ul .breadcrumbs [0]; span itemprop=name | "%i\n" / sed "1,2d;:x;$!{N;s/\n/\//;bx}",
+        . span .time | "%i\n" / sed "s/^.*> //; s/ *$//",
+        . span .views | "%i\n" / sed "s/^.*> //; s/ //g",
+        . span .replies | "%i\n" / sed "s/^.*> //; s/ //g",
+        div .topic-lists-wrap; li; {
+            li l@[0] id | "%(id)v\t",
+            span .hidden-xs | "%i\t",
+            div .level; * c@[0] | "%i\t" / sed "s/ &emsp;//",
+            time datetime [0] | "%(datetime)v\t",
+            div .text-wrap | "%i\t"
+        } | echo "" "\n"
+    ' <<< "$t"
     } | recode ISO-8859-2..UTF8 | jq -RnMcs '
         (inputs | split("\n")) as $lines | 
 
         .["link"]=$lines[0] |
-        .["title"]=$lines[1] |
-        .["path"]=$lines[2] |
-        .["time"]=$lines[3] |
-        .["views"]=$lines[4] |
-        .["replies"]=$lines[5] |
-        .["locked"]=$lines[6] |
-        .["posts"]=($lines[7:-1] | map(split("\t") | { ("author"):.[0] , ("level"):.[1] , ("time"):.[2] , ("text"):.[3] }))' > "$name"
+        .["locked"]=$lines[1] |
+        .["title"]=$lines[2] |
+        .["path"]=$lines[3] |
+        .["time"]=$lines[4] |
+        .["views"]=$lines[5] |
+        .["replies"]=$lines[6] |
+        .["posts"]=($lines[7:-1] | map(split("\t")[:-1] | { ("id"):.[0], ("author"):.[1] , ("level"):.[2] , ("time"):.[3] , ("text"):.[4] }))' > "$name"
 }
 
 get_sitemap() {
-    for j in $(ucurl "$1" | hgrep 'loc @m"^https://www.elektroda.pl/rtvforum/topic[0-9]*" | "%i\n"')
+    for j in $(ucurl "$1" | reliq 'loc m@B>"^https://www.elektroda.pl/rtvforum/topic[0-9]*" | "%i\n"')
     do
        [ "$(jobs | wc -l)" -gt "$maxprocs" ] && wait %%
         get_json "$j" &
@@ -69,7 +76,7 @@ get_sitemap() {
 }
 
 get_sitemaps() {
-	for i in $(ucurl 'https://www.elektroda.pl/sitemap.xml' | hgrep 'loc @m"^https://www.elektroda.pl/forum-gf[0-9]*" | "%i\n"')
+	for i in $(ucurl 'https://www.elektroda.pl/sitemap.xml' | reliq 'loc m@B>"^https://www.elektroda.pl/forum-gf[0-9]*" | "%i\n"')
 	do
         echo "$i"
         get_sitemap "$i"
@@ -77,7 +84,7 @@ get_sitemaps() {
 }
 
 get_page() {
-    for j in $(ucurl "$1" | hgrep 'tr; h2; a | "https://www.elektroda.pl%(href)a\n"')
+    for j in $(ucurl "$1" | reliq 'tr; h2; a | "https://www.elektroda.pl%(href)v\n"')
     do
        [ "$(jobs | wc -l)" -gt "$maxprocs" ] && wait %%
        get_json "$j" &
@@ -90,8 +97,8 @@ get_forum() {
     do
         echo "$next"
         t1="$(ucurl "$next")"
-        next="$(hgrep 'a +class="next" | "https://www.elektroda.pl%(href)a\n"' <<< "$t1" | head -n1)"
-        for j in $(hgrep 'tr; h2; a | "https://www.elektroda.pl%(href)a\n"' <<< "$t1")
+        next="$(reliq 'a .next | "https://www.elektroda.pl%(href)v\n"' <<< "$t1" | head -n1)"
+        for j in $(reliq 'tr; h2; a | "https://www.elektroda.pl%(href)v\n"' <<< "$t1")
         do
             [ "$(jobs | wc -l)" -gt "$maxprocs" ] && wait %%
             get_json "$j" &
@@ -101,7 +108,7 @@ get_forum() {
 }
 
 get_forums() {
-    for i in $(ucurl 'https://www.elektroda.pl/rtvforum/forums.html' | hgrep 'div +id="category-[0-9]*"; a +href="/rtvforum/forum[0-9]*\.html" | "https://www.elektroda.pl%(href)a\n"')
+    for i in $(ucurl 'https://www.elektroda.pl/rtvforum/forums.html' | reliq 'div #B>category-[0-9]*; a href=B>"/rtvforum/forum[0-9]*\.html" | "https://www.elektroda.pl%(href)v\n"')
 	do
         get_forum "$i"
 	done
