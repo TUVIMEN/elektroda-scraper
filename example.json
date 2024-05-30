@@ -1,81 +1,120 @@
 {
   "link": "https://www.elektroda.pl/rtvforum/topic4044982.html",
-  "locked": "false",
-  "title": "[RozwiÄzano] Jak podĹÄczyÄ Unifon Cytral Smart 5P zamiast Miwi 1131-D004C?",
-  "path": "Zabezpieczenia/Zabezpieczenia Stacjonarne/Domofony i kontrola dostÄpu",
+  "locked": false,
+  "title": "[RozwiÄzano] Jak podĹÄczyÄ Unifon Cytral Smart 5P zamiast Miwi 1131-D004C?\n",
+  "path": [
+    "Zabezpieczenia",
+    "Zabezpieczenia Stacjonarne",
+    "Domofony i kontrola dostÄpu"
+  ],
   "time": "25 Mar 2024 23:45",
-  "views": "276",
+  "views": "291",
   "replies": "9",
   "posts": [
     {
-      "id": "21019968",
+      "id": 21019968,
       "author": "tasior86",
       "level": "Poziom 11",
       "time": "2024-03-25T23:45:03+01:00",
       "text": "ChciaĹbym wymieniÄ stary domofon Miwi 1131-D004C na Unifon cytral smart 5p i chciaĹbym siÄ dowiedzieÄ czy bÄdzie kompatybilny i jak go podĹÄczyÄ. \r<br/>PodĹÄczenie i opis starego:\r<br/> <a href=\"https://obrazki.elektroda.pl/1467448900_1711406504.jpg\" target=\"_blank\" rel=\"noopener nofollow ugc\" data-fancybox=\"gallery\" data-thumb=\"https://obrazki.elektroda.pl/1467448900_1711406504_thumb.jpg\" data-download-src=\"https://obrazki.elektroda.pl/1467448900_1711406504_org.jpg\" title=\"https://obrazki.elektroda.pl/1467448900_1711406504.jpg\" class=\"postlink fancybox \"><img loading=\"lazy\" src=\"https://obrazki.elektroda.pl/1467448900_1711406504_thumb.jpg\" alt=\"Jak podĹÄczyÄ Unifon Cytral Smart 5P zamiast Miwi 1131-D004C?\" title=\"Jak podĹÄczyÄ Unifon Cytral Smart 5P zamiast Miwi 1131-D004C?\" class=\"lazy contain\" /></a> <a href=\"https://obrazki.elektroda.pl/3877190300_1711406512.jpg\" target=\"_blank\" rel=\"noopener nofollow ugc\" data-fancybox=\"gallery\" data-thumb=\"https://obrazki.elektroda.pl/3877190300_1711406512_thumb.jpg\" data-download-src=\"https://obrazki.elektroda.pl/3877190300_1711406512_org.jpg\" title=\"https://obrazki.elektroda.pl/3877190300_1711406512.jpg\" class=\"postlink fancybox \"><img loading=\"lazy\" src=\"https://obrazki.elektroda.pl/3877190300_1711406512_thumb.jpg\" alt=\"Jak podĹÄczyÄ Unifon Cytral Smart 5P zamiast Miwi 1131-D004C?\" title=\"Jak podĹÄczyÄ Unifon Cytral Smart 5P zamiast Miwi 1131-D004C?\" class=\"lazy contain\" /></a> \r<br/>\r<br/>Nie wiem co oznacza linia elektrozaczepu."
     },
     {
-      "id": "21020127",
+      "id": 0,
+      "author": "",
+      "level": "",
+      "time": "",
+      "text": ""
+    },
+    {
+      "id": 21020127,
       "author": "xury",
       "level": "Specjalista automatyka domowa",
       "time": "2024-03-26T07:48:05+01:00",
       "text": "Nazwy zaciskĂłw sÄ dokĹadnie takie same jak w <a href=\"https://cyfral.pl/wp-content/uploads/2016/07/Unifon-SMART-5P-.pdf\" target=\"_blank\" rel=\"nofollow noopener ugc\" class=\"postlink inline\" title=\"\" >https://cyfral.pl/wp-content/uploads/2016/07/Unifon-SMART-5P-.pdf</a>\r<br/>Do tego zaĹoĹźona tylko zw3."
     },
     {
-      "id": "21020190",
+      "id": 21020190,
       "author": "tasior86",
       "level": "Poziom 11",
       "time": "2024-03-26T08:38:26+01:00",
       "text": "Czyli pasujÄ i powinno pĂłjĹÄ bez problemu.\r<br/>Przewody 6 i 10 powinny byÄ oba podĹÄczone w jednym zacisku masy w unifonie? Zaczep 9 Ĺźe starego mam daÄ do obojÄtnie ktĂłrego sw1 lub sw2 i jeden zostawiÄ pusty?"
     },
     {
-      "id": "21020247",
+      "id": 0,
+      "author": "",
+      "level": "",
+      "time": "",
+      "text": ""
+    },
+    {
+      "id": 21020247,
       "author": "xury",
       "level": "Specjalista automatyka domowa",
       "time": "2024-03-26T09:35:17+01:00",
       "text": "Zaczep pod SW1 jak na rysunku rys.3"
     },
     {
-      "id": "21020333",
+      "id": 21020333,
       "author": "zybex",
       "level": "Pomocny dla uĹźytkownikĂłw",
       "time": "2024-03-26T10:33:24+01:00",
       "text": "<blockquote class=\"reply\" data-val=\"tasior86\"> <small><span class=\"name\">tasior86</span> napisaĹ:</small><div class='content visible'> \r<br/>Przewody 6 i 10 powinny byÄ oba podĹÄczone w jednym zacisku masy w unifonie? </div></blockquote>\r<br/>W starym tak nie jest. PrzecieĹź widaÄ przeciÄtÄ zworÄ 6-10. Twoja instalacja jest zatem 6 ĹźyĹowa i podĹÄcz wszystko zgodnie z rysunkiem 4 instrukcji.\r<br/>\r<br/> <a href=\"https://obrazki.elektroda.pl/9955737800_1711445725.jpg\" target=\"_blank\" rel=\"noopener nofollow ugc\" data-fancybox=\"gallery\" data-thumb=\"https://obrazki.elektroda.pl/9955737800_1711445725_thumb.jpg\" data-download-src=\"https://obrazki.elektroda.pl/9955737800_1711445725_org.jpg\" title=\"https://obrazki.elektroda.pl/9955737800_1711445725.jpg\" class=\"postlink fancybox \"><img loading=\"lazy\" src=\"https://obrazki.elektroda.pl/9955737800_1711445725_thumb.jpg\" alt=\"Jak podĹÄczyÄ Unifon Cytral Smart 5P zamiast Miwi 1131-D004C?\" title=\"Jak podĹÄczyÄ Unifon Cytral Smart 5P zamiast Miwi 1131-D004C?\" class=\"lazy contain\" /></a>"
     },
     {
-      "id": "21021234",
+      "id": 0,
+      "author": "",
+      "level": "",
+      "time": "",
+      "text": ""
+    },
+    {
+      "id": 21021234,
       "author": "tasior86",
       "level": "Poziom 11",
       "time": "2024-03-26T23:41:38+01:00",
       "text": "Jest 6 ĹźyĹowa ale 6 i 10 sÄ opisane jako masa i jedno wejĹcie na zaczep , a w nowym masa ma jedno wejĹcie i dwa na zaczep wiÄc juĹź siÄ pogubiĹem."
     },
     {
-      "id": "21021263",
+      "id": 21021263,
       "author": "xury",
       "level": "Specjalista automatyka domowa",
       "time": "2024-03-27T00:17:07+01:00",
       "text": "Racja nie zauwaĹźyĹem wczeĹniej przeciÄtej zwory. Czyli 6 to masa a 10 i 9 to zaczep."
     },
     {
-      "id": "21021351",
+      "id": 21021351,
       "author": "zybex",
       "level": "Pomocny dla uĹźytkownikĂłw",
       "time": "2024-03-27T07:39:10+01:00",
       "text": "<blockquote class=\"reply\" data-val=\"tasior86\"> <small><span class=\"name\">tasior86</span> napisaĹ:</small><div class='content visible'> Jest 6 ĹźyĹowa ale 6 i 10 sÄ opisane jako masa i jedno wejĹcie na zaczep , a w nowym masa ma jedno wejĹcie i dwa na zaczep wiÄc juĹź siÄ pogubiĹem.</div></blockquote>\r<br/>Masa jest tylko jedna i nie ĹÄczy siÄ z przyciskiem elektrozaczepu. W starym przycisk to zaciski 10 i 9. W nowym SW1 i SW2."
     },
     {
-      "id": "21021460",
+      "id": 0,
+      "author": "",
+      "level": "",
+      "time": "",
+      "text": ""
+    },
+    {
+      "id": 21021460,
       "author": "tasior86",
       "level": "Poziom 11",
       "time": "2024-03-27T09:21:52+01:00",
       "text": "Ok teraz pasujÄ <img loading=\"lazy\" src=\"https://static.elektroda.pl/images/smiles/icon_smile.gif\" alt=\":)\" class=\"smile lazy\" />"
     },
     {
-      "id": "21061101",
+      "id": 21061101,
       "author": "tasior86",
       "level": "Poziom 11",
       "time": "2024-04-26T13:59:23+02:00",
       "text": "PodĹÄczone zgodnie z opisem."
+    },
+    {
+      "id": 0,
+      "author": "",
+      "level": "",
+      "time": "",
+      "text": ""
     }
   ]
 }

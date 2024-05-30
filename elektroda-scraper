@@ -30,41 +30,22 @@ get_json() {
     local -r rh="${1%.html}"
     local -r name="${rh#https://*/rtvforum/topic}"
     [ -e "$name" ] && return
-    echo "$1"
-    local -r t="$(ucurl "$1")"
-    {
-    echo "$1" #link
-    if reliq 'a .reply-bttn | "%i\n"' <<< "$t" | grep -q 'Zamkni'
-    then
-        echo 'true'
-    else
-        echo 'false'
-    fi
-    reliq '
-        . h1 class=a>topic-title-editor | "%i\n" / sed "/^$/d",
-        . ul .breadcrumbs [0]; span itemprop=name | "%i\n" / sed "1,2d;:x;$!{N;s/\n/\//;bx}",
-        . span .time | "%i\n" / sed "s/^.*> //; s/ *$//",
-        . span .views | "%i\n" / sed "s/^.*> //; s/ //g",
-        . span .replies | "%i\n" / sed "s/^.*> //; s/ //g",
-        div .topic-lists-wrap; li; {
-            li l@[0] id | "%(id)v\t",
-            span .hidden-xs | "%i\t",
-            div .level; * c@[0] | "%i\t" / sed "s/ &emsp;//",
-            time datetime [0] | "%(datetime)v\t",
-            div .text-wrap | "%i\t"
-        } | echo "" "\n"
-    ' <<< "$t"
-    } | recode ISO-8859-2..UTF8 | jq -RnMcs '
-        (inputs | split("\n")) as $lines | 
-
-        .["link"]=$lines[0] |
-        .["locked"]=$lines[1] |
-        .["title"]=$lines[2] |
-        .["path"]=$lines[3] |
-        .["time"]=$lines[4] |
-        .["views"]=$lines[5] |
-        .["replies"]=$lines[6] |
-        .["posts"]=($lines[7:-1] | map(split("\t")[:-1] | { ("id"):.[0], ("author"):.[1] , ("level"):.[2] , ("time"):.[3] , ("text"):.[4] }))' > "$name"
+    echo "$1" >&2
+    ucurl "$1" | reliq '
+        .locked.b a .reply-bttn | "%i" / sed "s/.*Zamkni.*/t/p" "n",
+        .title h1 class=a>topic-title-editor | "%i\n" / sed "/^$/d",
+        .path.a ul .breadcrumbs [0]; [2:] span itemprop=name | "%i\n",
+        .time span .time | "%i" / sed "s/^.*> //; s/ *$//",
+        .views span .views | "%i" / sed "s/^.*> //; s/ //g",
+        .replies span .replies | "%i" / sed "s/^.*> //; s/ //g",
+        .posts div .topic-lists-wrap; li; {
+            .id.u li l@[0] id | "%(id)v",
+            .author span .hidden-xs | "%i",
+            .level div .level; * c@[0] | "%i" / sed "s/ &emsp;//",
+            .time time datetime [0] | "%(datetime)v",
+            .text div .text-wrap | "%i"
+        } |
+    ' | recode ISO-8859-2..UTF8 | jq -srcM --arg 'link' "$1" '{"link":$link}+.[0]' > "$name"
 }
 
 get_sitemap() {
@@ -73,14 +54,16 @@ get_sitemap() {
        [ "$(jobs | wc -l)" -gt "$maxprocs" ] && wait %%
         get_json "$j" &
     done
+    wait
 }
 
 get_sitemaps() {
 	for i in $(ucurl 'https://www.elektroda.pl/sitemap.xml' | reliq 'loc m@B>"^https://www.elektroda.pl/forum-gf[0-9]*" | "%i\n"')
 	do
-        echo "$i"
+        echo "$i" >&2
         get_sitemap "$i"
 	done
+    wait
 }
 
 get_page() {
@@ -89,13 +72,14 @@ get_page() {
        [ "$(jobs | wc -l)" -gt "$maxprocs" ] && wait %%
        get_json "$j" &
     done
+    wait
 }
 
 get_forum() {
     next="$1"
     while :
     do
-        echo "$next"
+        echo "$next" >&2
         t1="$(ucurl "$next")"
         next="$(reliq 'a .next | "https://www.elektroda.pl%(href)v\n"' <<< "$t1" | head -n1)"
         for j in $(reliq 'tr; h2; a | "https://www.elektroda.pl%(href)v\n"' <<< "$t1")
@@ -103,6 +87,7 @@ get_forum() {
             [ "$(jobs | wc -l)" -gt "$maxprocs" ] && wait %%
             get_json "$j" &
         done
+        wait
         [ -z "$next" ] && break
     done
 }
