@@ -49,7 +49,7 @@ get_json() {
 }
 
 get_sitemap() {
-    for j in $(ucurl "$1" | reliq 'loc m@B>"^https://www.elektroda.pl/rtvforum/topic[0-9]*" | "%i\n"')
+    for j in $(ucurl "$1" | reliq 'loc i@B>"^https://www.elektroda.pl/rtvforum/topic[0-9]*" | "%i\n"')
     do
        [ "$(jobs | wc -l)" -gt "$maxprocs" ] && wait %%
         get_json "$j" &
@@ -58,7 +58,7 @@ get_sitemap() {
 }
 
 get_sitemaps() {
-	for i in $(ucurl 'https://www.elektroda.pl/sitemap.xml' | reliq 'loc m@B>"^https://www.elektroda.pl/forum-gf[0-9]*" | "%i\n"')
+	for i in $(ucurl 'https://www.elektroda.pl/sitemap.xml' | reliq 'loc i@B>"^https://www.elektroda.pl/forum-gf[0-9]*" | "%i\n"')
 	do
         echo "$i" >&2
         get_sitemap "$i"
